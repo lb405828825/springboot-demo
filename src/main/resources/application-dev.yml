@@ -1,0 +1,15 @@
+server:
+  port: 11886
+
+hbaseconf:
+  hbase_zk_quorum: "172.18.9.1"
+  zk_znode_parent: "/hyperbase1"
+  hbase_zk_property_client_port: "2181"
+  hbase_rpc_timeout: 5000
+  hbase_client_retries_number: 3
+
+logging:
+  level: info
+spring:
+  thymeleaf:
+    cache: false
