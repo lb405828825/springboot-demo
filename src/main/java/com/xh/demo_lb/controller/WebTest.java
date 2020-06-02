@@ -8,9 +8,16 @@ import com.xh.demo_lb.service.WriteLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 @Api("Web test controller API")
 @RestController
@@ -58,5 +65,30 @@ public class WebTest {
         response.setResult(0);
         response.setMessage("操作成功");
         return response;
+    }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public Map<String,Object> singleFileUpload(@RequestParam("file")MultipartFile file, RedirectAttributes redirectAttributes){
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(file.isEmpty()){
+            redirectAttributes.addFlashAttribute("message", "请选择文件");
+            map.put("upload", 0);
+            map.put("message", "请选择文件");
+//            return "redirect:uploadStatus";
+            return map;
+        }
+
+        try {
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get("/" + file.getOriginalFilename());
+            Files.write(path, bytes);
+            redirectAttributes.addFlashAttribute("message","成功上传"+file.getOriginalFilename());
+            map.put("upload", 1);
+            map.put("message", "成功上传");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
     }
 }

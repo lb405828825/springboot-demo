@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @Getter
 @Component("hbase client properties info")
-@ConfigurationProperties("hbaseconf")
+@ConfigurationProperties(prefix = "hbaseconf")
 public class HbaseClientProperties {
     private String hbaseZkQuorum;
     private String zkZnodeParent;
